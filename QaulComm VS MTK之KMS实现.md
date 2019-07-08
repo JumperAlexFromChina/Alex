@@ -60,5 +60,5 @@ module_init(msm_drm_register)
 
 
 
-找时间看一下QualComm dts的写法
-
+找时间看一下QualComm dts的写法：
+hdmi模块分成两个节点，一个phy，一个主节点
