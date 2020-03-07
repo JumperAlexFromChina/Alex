@@ -1,3 +1,5 @@
+#HDMI 1.4 spec & CEA861-D
+
 L-PCM and IEC61937 compressed audio data is formatted in the **Audio Sample Packet** or in the **High Bitrate Audio Stream Packet** as a structure that closely resembles in an IEC60958 frame.
 
 
@@ -93,3 +95,88 @@ sink必须支持2 channel 32k，44.1k
    * DM_INH (Donwmix Inhibit,只针对DVD audio应用下才设置为1)
 
    * LFEPBL0，LFEPBL1
+   
+4. 861-D中规定，当audio infoframe中的内容和实际audio stream中内容冲突时，以实际audio stream内容为准
+
+
+
+# I2S 
+
+I2S（Inter-IC sound）
+
+协议规定：MCLK / LRCK = 256 or 384, BCK / LRCK = 64 or 128 or 256
+
+对于HDMI来说，audio bit depth最高到24bit，所以采用BCK / LRCK = 64，即左右声道各32 bit。
+
+
+
+# IEC60958
+
+通过一根线同时传递时钟信号和数据信号
+
+Biphase Mark Code 双相符号编码
+
+
+
+1 block = 192 frame ；1 frame = 2 subframe
+
+**subframe结构：**
+
+| Preamble        | Auxiliary      |            | LSB              MSB | U    | V    | C    | P    |
+| --------------- | -------------- | ---------- | -------------------- | ---- | ---- | ---- | ---- |
+| 0             3 | 4            7 | 8       11 | 12                27 | 29   | 29   | 30   | 31   |
+
+U user bit, V validity bit, C channel status bit, P parity bit
+
+
+
+**Channel Status Bit：**
+
+| Bit Number（LSB-MSB）                                        | Value（LSB-MSB）                                             |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Bit 0                                                        | 0（fixed, for consumer use）                                 |
+| **Bit 1 (audio format information)**                         | 0 for L-PCM, 1 for others                                    |
+| Bit 2 (copyright assertion)                                  |                                                              |
+| Bit 3-5 （additional format information， meaning depends on bit 1） |                                                              |
+| Bit 6-7 (mode)                                               | 00 (fixed, mode 0)                                           |
+| Bit 8-15 (category code)                                     | lsb at bit 8                                                 |
+| Bit 16-19 (source number)                                    | (0000, do not take into account), lsb at bit 16              |
+| Bit 20-23 (channel number)                                   | (0000, do not take into ccount), lsb at bit 20               |
+| **Bit 24-27 (sampling frequency)**                           |                                                              |
+| **Bit 28-29 (clock accuracy)**                               |                                                              |
+| Bit 30-31                                                    | 00 (fixed)                                                   |
+| **Bit 32-35 (sample word length)**                           | bit depth可选16-24                                           |
+| Bit 36-39 (original sampling frequency)                      |                                                              |
+| Bit 40-41 (CGMS-A)                                           | 00 coping is permitted without restrictions ; 01 condition not be used; 10 one generation of copies may be made; 11 no coping is permitted |
+
+channel status bit共192bit，但实际只有bit 0-41有包含有效内容，bit 42-191均reserved
+
+
+
+# IEC61937
+
+| ...  | Data-burst | Stuffing | Data-burst | Stuffing | Data-burst | ...  |
+| ---- | ---------- | -------- | ---------- | -------- | ---------- | ---- |
+|      |            |          |            |          |            |      |
+
+**Data-burst**的构成：
+
+| Pa        | Pb        | Pc         | Pd                                                           | Burst-payload |
+| --------- | --------- | ---------- | ------------------------------------------------------------ | ------------- |
+| **F872**h | **4E1F**h | burst-info | length of burst-payload, bits or bytes according to audio format |               |
+
+Pa，Pb，Pc，Pd均为16bit数据，构成**Burst Preamble**，分别被封装在IEC60958的一个subframe中。Pa，Pb是sync word，值是固定的。Pc是burst-info，Pd表明burst-payload长度。
+
+**burst-info:**
+
+| Bits of Pc | Description                                                  |
+| ---------- | ------------------------------------------------------------ |
+| 0-6        | **Data-type**                                                |
+| 7          | **Error flag**, indicate the burst-payload is valid or invalid |
+| 8-12       | **Data-type-dependent info**                                 |
+| 13-15      | **Bitstream-number**                                         |
+
+Receiver是否检查Error flag是可选的。
+
+
+
