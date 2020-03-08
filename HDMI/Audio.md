@@ -178,5 +178,19 @@ Pa，Pb，Pc，Pd均为16bit数据，构成**Burst Preamble**，分别被封装�
 
 Receiver是否检查Error flag是可选的。
 
+**Data-burst**可分为3类，audio Data-burst，pause Data-burst，null Data-burst。pause Data-burst可以用于gap audio Data-burst，or switch audio data type，即在两个audio Data-burst之间，类似于下表示意：
+
+| ...  | Stuffing | Audio Data-burst | Stuffing | Pause Data-burst | Stuffing | Audio     Data-burst | Stuffing | ...  |
+| ---- | -------- | ---------------- | -------- | ---------------- | -------- | -------------------- | -------- | ---- |
+|      |          |                  |          |                  |          |                      |          |      |
+
+stuffing，也可以称为**burst spacing**，是由4个16bit全0构成，没有Pa,Pb,Pc,Pd。Burst preamble是只有Data-burst才有，stuffing没有Burst Preamble（Pa,Pb,Pc,Pd）
 
 
+
+# HDMI audio
+
+MTK HDMI 目前仅支持L-PCM和None Linear PCM（即仅支持通过Audio sample packet和High Bitrate Audio Stream Packet传送audio data），不支持one bit audio和DST audio。
+
+* L-PCM：from hardware perspective, audio module送L-PCM audio data到HDMI module，只会通过I2S（有4根Data line，最高支持同时送8ch的数据）
+* None-Linear PCM: 只会通过SPDIF传送数据，在>192kHZ(High Bitrate audio Stream Packet)的时候，此SPDIF有一对应的High Bitrate模式。
