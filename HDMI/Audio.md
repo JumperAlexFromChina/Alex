@@ -58,6 +58,8 @@ sink必须支持2 channel 32k，44.1k
 
 **Audio InfoFrame**: 
 
+![AudioInfoframe](./picture/AudioInfoframe.png)
+
 1. Audio Infoframe 至少每帧发送一次
 
 2. Audio InfoFrame shall be transmitted no later than one video field following the first affected non-silent audio sample. 正常来讲，Audio Infoframe在audio packet发送之前就发送。
@@ -194,3 +196,4 @@ MTK HDMI 目前仅支持L-PCM和None Linear PCM（即仅支持通过Audio sample
 
 * L-PCM：from hardware perspective, audio module送L-PCM audio data到HDMI module，只会通过I2S（有4根Data line，最高支持同时送8ch的数据）
 * None-Linear PCM: 只会通过SPDIF传送数据，在>192kHZ(High Bitrate audio Stream Packet)的时候，此SPDIF有一对应的High Bitrate模式。
+
