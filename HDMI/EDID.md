@@ -24,7 +24,7 @@
 | 0          | 02h   | Tag                                                          |
 | 1          | 03h   | Reversion Number                                             |
 | 2          | d     | Start of Detailed Timing Description Block                   |
-| 3          |       | bit 7(underscan);bit 6(audio); bit 5(YCbCr444);bit 4(YCbCr422);lower 4bits(n, the number of Detailed Timing Descriptor Blcok) |
+| 3          |       | bit 7(underscan);bit 6(basic audio); bit 5(YCbCr444);bit 4(YCbCr422);lower 4bits(n, the number of Detailed Timing Descriptor Blcok) |
 | 4          |       | Start of data block collection                               |
 | d-1        |       | End of data block collection                                 |
 | d          |       | Start of Detailed Timing Descriptor                          |
@@ -74,3 +74,11 @@ Tag Code:
 
 
 一般来讲，edid block 1中Data Block的排列顺序是Video Data Block，Audio Data Block，Speaker Allocation Data Block，Vendor Specific Data Block，Extended Data Block
+
+
+
+
+
+##HDMI VSDB
+
+![HDMI VSDB](./picture/HDMI VSDB.png)
