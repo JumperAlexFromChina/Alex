@@ -1,7 +1,5 @@
 #Pixel Encoding and Color depth
 
-
-
 ##pixel encoding
 
 1. Only pixel encodings of RGB 4:4:4, YCBCR 4:2:2, and YCBCR 4:4:4 (as specified in Section 6.5)may be used on HDMI. 这是HDMI 1.4的规定，HDMI 2.0引入了YCBCR 4:2:0。
@@ -73,17 +71,83 @@
 
 
 
+# Quantization Ranges
+
+![Quantization Ranges](./picture/Quantization Ranges.png)
+
+
+
 # Colorimetry
+
+每种video format都有默认的colorimetry，如果不在AVI infoframe的C filed（C1，C0）中表明当前传输的colorimetry，那Source就要保证所传输的video使用的是默认的colorimetry，而Sink也要把收到的video当默认的colorimetry处理。
+
+SMPTE 170M; ITU-R BT.601; ITU-R BT.709; xvYCC...
 
 
 
 # AVI InfoFrame
 
- 
+ Source应该一直发AVI InfoFrame，至少每两帧发一次。
+
+![AVI infoframe](./picture/AVI infoframe.png)
+
+当Sink的HDMI VSDB中CNC bit具有某种（Graphics，Photo，Cinema，Game）内容的特殊处理模式时，并且Source知道当前video来源时，才会把AVI infoFrame中的ITC和CN1，CN0设置成非0，否则应该设置成全0（No Data）。 这样时方便Sink对某些特殊video内容做特殊处理。
+
+
 
 # HDMI VSIF 
+
+HDMI VSIF主要有两个功能：
+
+1. 4k x 2k
+2. 3D
+
+如果要发HDMI VSIF，至少每两帧发一次。
+
+当AVI InfoFrame中包含了VIC，而HDMI VSIF中包含了HDMI_VIC(for 4k x 2k) ,Sink应该使用HDMI VSIF中的HDMI_VSIF。
+
+![HDMI VSIF](./picture/HDMI VSIF.png)
+
+
+
+![HDMI_VIDEO_FORMAT](./picture/HDMI_VIDEO_FORMAT.png)
+
+![HDMI_VIC](./picture/HDMI_VIC.png)
+
+![3D_structure](./picture/3D_structure.png)
+
+## 3D video format structur
+
+如果HDMI VSIF for 4k x 2k，只看HDMI_VIC即可。
+
+如果HDMI VSIF for 3D，要结合AVI InfoFrame中的VIC值和HDMI VSIF中的3D structure。
+
+### frame packing
+
+![frame packing for progressive format](./picture/frame packing for progressive format.png)
+
+![Frame packing for interlaced format](./picture/Frame packing for interlaced format.png)
+
+### side-by-side
+
+![Side-by-Side](./picture/Side-by-Side.png)
+
+### Top-and-Bottom
+
+![Top-and-Bottom](./picture/Top-and-Bottom.png)
 
 
 
 # GCP
 
+![GCP](./picture/GCP.png)
+
+1. GCP有4个完全一样的subpacket。
+
+2. General Control packets indicating Set_AVMUTE or Clear_AVMUTE may only be transmitted between the active edge of VSYNC and 384 pixels following this edge.  
+
+   要Set_AVMUTE或者Clear_AVMUTE的时候，要在VSYNC之后的384个pixel之内发送GCP。但如果时表示Deep Color，需要在video data period之后发GCP。
+
+3. The General Control packet’s Set_AVMUTE and Clear_AVMUTE flags may be used by a Source to reduce the negative impact on the Sink of TMDS clock changes or interruptions. Use of the AVMUTE function may prevent spurious pops or noises in the audio during these clock changes.
+
+   AVMUTE就是告诉Sink，当前video audio无效，应该mute。可以利用AVMUTE来避免闪屏或者pop noise。
