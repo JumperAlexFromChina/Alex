@@ -51,7 +51,7 @@
    * GCP (general control packet)
 
      The Source occasionally sends a General Control Packet (GCP)
-     communicating the current color depth and the packing phase of the last pixel character sent **prior to the GCP**. When transmitting Deep Color, the Source shall send a General Control Packet (GCP) with an accurate CD field indicating the current color depth and with the PP field (PP0, PP1, PP2, PP3) indicating the packing phase of **the last pixel character (within the last Video Data Period) **sent prior to the GCP. **上一个Video Data Period中最后一个像素的packing phase**， 即上一行最后一个packing phase。GCP要在Video Data Period之后发(在传输CD和PP信息时，要在Video Data Period之后发；如果是传输AVMUTE，Clear_AVMUTE信息的时候，则要在VSYNC之后的384pixel之内就发出去)，不像audio infoframe，需要在audio sample packet发送之前就要发出去。
+     communicating the current color depth and the packing phase of the last pixel character sent **prior to the GCP**. When transmitting Deep Color, the Source shall send a General Control Packet (GCP) with an accurate CD field indicating the current color depth and with the PP field (PP0, PP1, PP2, PP3) indicating the packing phase of **the last pixel character (within the last Video Data Period) **sent prior to the GCP. **上一个Video Data Period中最后一个像素的packing phase**， 即上一行最后一个active video pixel的packing phase。根据spec的意思，GCP要在Video Data Period之后发(在传输CD和PP信息时，要在Video Data Period之后发；如果是传输AVMUTE，Clear_AVMUTE信息的时候，则要在VSYNC之后的384pixel之内就发出去)，不像audio infoframe，需要在audio sample packet发送之前就要发出去。**而在实际做法中，GCP每个field发一次，紧跟Vsync之后发，那PP就是上一个field最后一个像素的最后一个phase，所以肯定对应到20bit-phase0,30bit-phase4,36bit-phase3,48bit-phase2,即每种情况下的最后一个phase。PP是由hardware自己计算去填，CD和AVMUTE才有hdmi driver去填写。**
 
      如果Sink连续4帧没有收到GCP，它应该切换到24bit mode。
 
@@ -87,7 +87,9 @@ SMPTE 170M; ITU-R BT.601; ITU-R BT.709; xvYCC...
 
 # AVI InfoFrame
 
- Source应该一直发AVI InfoFrame，至少每两帧发一次。
+ Source应该一直发AVI InfoFrame，至少每两个field发一次。
+
+> spec规定至少每两个field发一次，但实际做法是每个field发一次，对Progressive video format，即每帧发一次，对Interlace video format而言，即Odd，Even field各一次。实际做法中，AVI infoframe被放到紧跟VSYNC之后。
 
 ![AVI infoframe](./picture/AVI infoframe.png)
 
@@ -102,7 +104,7 @@ HDMI VSIF主要有两个功能：
 1. 4k x 2k
 2. 3D
 
-如果要发HDMI VSIF，至少每两帧发一次。
+如果要发HDMI VSIF，至少每两个field发一次。
 
 当AVI InfoFrame中包含了VIC，而HDMI VSIF中包含了HDMI_VIC(for 4k x 2k) ,Sink应该使用HDMI VSIF中的HDMI_VSIF。
 
@@ -146,8 +148,10 @@ HDMI VSIF主要有两个功能：
 
 2. General Control packets indicating Set_AVMUTE or Clear_AVMUTE may only be transmitted between the active edge of VSYNC and 384 pixels following this edge.  
 
-   要Set_AVMUTE或者Clear_AVMUTE的时候，要在VSYNC之后的384个pixel之内发送GCP。但如果时表示Deep Color，需要在video data period之后发GCP。
+   要Set_AVMUTE或者Clear_AVMUTE的时候，要在VSYNC之后的384个pixel之内发送GCP。但如果时表示Deep Color，需要在video data period之后发GCP。**在实际做法中，无论是表示deep color还是AVMUTE，GCP每个field发一次，紧跟Vsync之后发，那PP就是上一个field最后一个像素的最后一个phase，所以肯定对应到20bit-phase0,30bit-phase4,36bit-phase3,48bit-phase2,即每种情况下的最后一个phase（PP是固定的）。PP是由hardware自己计算去填，CD和AVMUTE才有hdmi driver去填写。**
 
 3. The General Control packet’s Set_AVMUTE and Clear_AVMUTE flags may be used by a Source to reduce the negative impact on the Sink of TMDS clock changes or interruptions. Use of the AVMUTE function may prevent spurious pops or noises in the audio during these clock changes.
 
    AVMUTE就是告诉Sink，当前video audio无效，应该mute。可以利用AVMUTE来避免闪屏或者pop noise。
+   
+   > 实际情况中，有些Rx电视行为做的不好，在接到AVMUTE之后，有可能把画面处理成绿屏而非黑屏。所以，与其依赖AVMUTE让电视去出黑屏，还不如在Tx这边就把video处理成黑屏画面，这样肯定不会出错。
