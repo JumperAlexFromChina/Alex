@@ -44,11 +44,18 @@ sink必须支持2 channel 32k，44.1k
 
 
 
-**audio sample packet**：layout 0 for 2 channel L-PCM或IEC61937 compressed audio（fs<=192kHZ, 大于192kHZ的用High-Bitrate audio stream packet）, layout 1 for L-PCM multi-channel
+**audio sample packet**：
+
+1. layout 0 for 2 channel L-PCM或IEC61937 compressed audio（fs<=192kHZ, 大于192kHZ的用High-Bitrate audio stream packet）
+2. layout 1 for L-PCM multi-channel
+
+![audio sample packet](./picture/audio sample packet.png)
 
 
 
 **High-Bitrate audio stream packet**：when carrying IEC61937 compressed audio at frame rate above 192kHZ, the High-Bitrate audio stream packet shall be used. For many high bitrate streams (e.g. DTS-HD Master Audio and Dolby MAT), the IEC61937 data burst will have a repetition period that is multiple of four frames因为一个packet能包含4个frame, and so the Pa and Pb syncwords will always be found in the same subpacket. In such cases, the codec vendor may impose the additional constraint that Pa and Pb always appear in subpacket 0. Each packet carries four contiguous IEC60958 frames which corresponds to (4 * 2 * 16=) 128 bits of an IEC61937 stream.
+
+![High-Bitrate Audio Stream Packet](./picture/High-Bitrate Audio Stream Packet.png)
 
 
 

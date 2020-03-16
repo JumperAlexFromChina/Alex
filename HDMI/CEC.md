@@ -20,11 +20,13 @@
 
 ![start bit timing](./picture/start bit timing.png)
 
+重要时间参数：**3.7，4.5**，在看波形时方便定位start bit
+
 ## Data Bit Timing
 
 ![Data Bit Timing](./picture/Data Bit Timing.png)
 
-
+重要时间参数：**2.4**，在看波形时方便定位data bit
 
 ## ACK Bit Timing
 
@@ -34,7 +36,8 @@ CEC Figure 5 shows an example bit with both Initiator and Follower where the Fol
 
 ![cec ACK](./picture/cec ACK.png)
 
-
+1. 非广播消息，0 = ACK 拉低表示ACK
+2. 广播消息，1 = ACK，拉低表示NACK
 
 # Frame Description
 
@@ -42,10 +45,52 @@ CEC Figure 5 shows an example bit with both Initiator and Follower where the Fol
 
 ![cec frame](./picture/cec frame.png)
 
-
+最大message size是16*10 bit。包括Header block和Data block。
 
 ![cec header block](./picture/cec header block.png)
 
-
-
 ![cee logical address](./picture/cee logical address.png)
+
+
+
+# Reliable Communication Mechanism
+
+为了提高CEC可靠性、稳定性，有以下几种机制：
+
+1. **Frame-Retransmission**，重传机制
+
+   * 当directly addressed message被NACK 或者 广播消息被NACK
+   * 当Initiator在拉低但是Follower却把CEC line拉高的时候（即initiator cec message被打断）
+
+   在上述两种情况，都应该重传。重传至少1次，但最高不应该超过5次。如果是polling message，建议只重传1次。
+
+2. **Frame Validation**，检查Frame message长度是否符合要求
+
+   如果Data block长度小于对应message的长度，Follower应该忽略这个message
+
+3. **CEC line error handling**，应该检查Data bit timing是否符合规定
+
+
+
+# CEC Arbitration
+
+1. **Signal Free Time**，在开始传送一个新的frame之前，应该留有一段空闲时间。
+
+   ![Signal Free Time](./picture/Signal Free Time.png)
+
+   Note: 这里的计量单位是nominal data bit period,即2.4ms；上一个Initiator发完之后要等7个data bit period，而新的Initiator只需要等5个data bit period，这使得CEC bus不会被一个设备独占，让其它设备也有机会成为Initiator。
+
+2. **Message Time Constraints**
+
+   * 理想最大响应时间是200ms
+   * 要求最大响应时间是1s
+
+
+
+有以下两种方式让Sink（TV）显示OSD字符（具体显示方式由Sink自己决定）
+
+1. CEC message（Set OSD String）
+
+2. SPD InfoFrame 
+
+   Source Product Descriptor InfoFrame
