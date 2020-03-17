@@ -93,4 +93,6 @@ CEC Figure 5 shows an example bit with both Initiator and Follower where the Fol
 
 2. SPD InfoFrame 
 
-   Source Product Descriptor InfoFrame
+   Source Product Descriptor InfoFrame：这个InfoFrame可以用来传递Source的一些信息，包含Vendor Name和Product description
+   
+   > 比较两种方式，其中Set OSD String更自由，可以发送任意字符串，而SPD infoFrame规定用来传输product description信息。
