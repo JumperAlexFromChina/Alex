@@ -39,6 +39,15 @@ CEC Figure 5 shows an example bit with both Initiator and Follower where the Fol
 1. 非广播消息，0 = ACK 拉低表示ACK
 2. 广播消息，1 = ACK，拉低表示NACK
 
+
+
+![cec wave](./picture/cec wave.jpg)
+
+看cec波形有以下几个点：
+
+1. 数下降沿，加上start bit，一个block共有11个下降沿（1start bit +10data bit),如果一个cec message有多个block，也只有1个start bit，表明cec message开始。
+2. start bit 3.7, 4.5ms; data bit 2.4ms
+
 # Frame Description
 
 ##Frame Description
