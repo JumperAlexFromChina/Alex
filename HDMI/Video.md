@@ -155,3 +155,68 @@ HDMI VSIF主要有两个功能：
    AVMUTE就是告诉Sink，当前video audio无效，应该mute。可以利用AVMUTE来避免闪屏或者pop noise。
    
    > 实际情况中，有些Rx电视行为做的不好，在接到AVMUTE之后，有可能把画面处理成绿屏而非黑屏。所以，与其依赖AVMUTE让电视去出黑屏，还不如在Tx这边就把video处理成黑屏画面，这样肯定不会出错。
+
+
+
+
+
+# InfoFrame
+
+![InfoFrame](./picture/InfoFrame.png)
+
+![InfoFrame checksum](./picture/InfoFrame checksum.jpg)
+
+
+
+# AVI InfoFrame & GCP test
+
+1. AVI infoFrame test
+
+   * 原始RGB444图像，修改AVI infoFrame Y1 Y0 field，画面均偏绿
+
+     **原始RGB444图像** 
+
+     ![RGB原始图像](./picture/RGB原始图像.jpg)
+
+     **RGB444-YCbCr444图像**
+
+     ![RGB-YCbCr444](./picture/RGB-YCbCr444.jpg)
+
+     **RGB444-YCbCr422图像**
+
+     ![RGB-YCbCr422](./picture/RGB-YCbCr422.jpg)
+
+   * 原始YCbCr444图像，修改AVI infoFrame Y1 Y0 field
+
+     **原始YCbCr444图像**
+
+     ![YCbCr444原始图像](./picture/YCbCr444原始图像.jpg)
+
+     **YCbCr444-RGB图像，颜色偏紫红**
+
+     ![YCbCr444-RGB](./picture/YCbCr444-RGB.jpg)
+
+     **YCbCr444-YCbCr422图像，颜色偏暗绿**
+
+     ![YCbCr444-YCbCr422](./picture/YCbCr444-YCbCr422.jpg)
+
+     ​	
+
+   * 修改AVI InfoFrame中SC1 SC0 field（overscan, underscan），对Astro1831 Analyzer，画面没有变化；对Sony TV，SC1 SC0=01（overscan），会丢失掉一些边缘的有效画面，SC1 SC0=10（underscan），不会丢失acitve pixel。
+
+   * 修改AVI InfoFrame中的B1 B0 field和Top Bar，End Bar，Left Bar，Right Bar field，Astro1831 Analyzer和Sony TV画面均无变化，大部分Rx都不对Bar信息作处理？
+
+   * 修改AVI InfoFrame中M1 M0（picture aspect ratio）和R3 R2 R1 R0（active aspect ratio），Astro1831 Analyzer画面无变化，Sony TV会调整宽高比，例如原始画面是FHD 16:9，修改M1 M0和R3 R2 R1 R0变成4:3，Sony TV画面会变成4:3，左右两侧用黑色区域填充。
+
+   * 修改AVI InfoFrame中VIC field，Astro1831 Analyzer和Sony TV画面均无变化。
+
+   * 修改AVI InfoFrame中PR3 PR2 PR1 PR0 field，Astro1831 Analyzer和Sony TV画面均有细微变化，横向上的粒度变大，即横向上的清晰度下降。可能是Pixel Repetition的时候，Rx会每隔一列取一次有效数据然后拉长成整幅画面，横向清晰度下降。
+
+2. GCP test
+
+   * 修改GCP color depth field，例如实际video 10bit，而GCP color depth field改成是8bit，Astro1831 Analyzer和Sony TV画面均变糊，Analyzer可以看出timing异常（Horizontal方向timing异常，Vertical方向timing不受影响)
+
+     **实际video 10bit，而GCP color depth 8bit**
+
+     ![10bit-GCP8bit](./picture/10bit-GCP8bit.jpg)
+
