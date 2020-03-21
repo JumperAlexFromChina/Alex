@@ -6,6 +6,20 @@
 
 高电平由AVcc决定，低电平由source端的current source和sink端的AVcc和阻抗RT决定。
 
+* calibrate原理
+
+![IMG_0905](./picture/IMG_0905.jpg)
+
+* Data Channel简图
+
+![IMG_0906](./picture/IMG_0906.jpg)
+
+* Clock Channel简图
+
+  ![IMG_0907](./picture/IMG_0907.jpg)
+
+
+
 2. **单端信号**
 
 ![Single-ended Differential Signal](./picture/Single-ended Differential Signal.png)
