@@ -199,7 +199,7 @@ stuffing，也可以称为**burst spacing**，是由4个16bit全0构成，没有
 
 # HDMI audio
 
-MTK HDMI 目前仅支持L-PCM和None Linear PCM（即仅支持通过Audio sample packet和High Bitrate Audio Stream Packet传送audio data），不支持one bit audio和DST audio。
+实际方案中，HDMI 目前仅支持L-PCM和None Linear PCM（即仅支持通过Audio sample packet和High Bitrate Audio Stream Packet传送audio data），不支持one bit audio和DST audio。
 
 * L-PCM：from hardware perspective, audio module送L-PCM audio data到HDMI module，只会通过I2S（有4根Data line，最高支持同时送8ch的数据）
 * None-Linear PCM: 只会通过SPDIF传送数据，在>192kHZ(High Bitrate audio Stream Packet)的时候，此SPDIF有一对应的High Bitrate模式。
