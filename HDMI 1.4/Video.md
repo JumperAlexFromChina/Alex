@@ -12,15 +12,15 @@
 
    * **8-bit RGB 4:4:4**
 
-     ![8bit-RBG444](/Users/zengcan/Documents/GitHub/DRM/HDMI/picture/8bit-RBG444.png)
+     ![8bit-RBG444](./picture/8bit-RBG444.png)
 
    * **12-bit YCbCr 4:2:2**
 
-     ![YCbCr422-12bit](/Users/zengcan/Documents/GitHub/DRM/HDMI/picture/YCbCr422-12bit.png)
+     ![YCbCr422-12bit](./picture/YCbCr422-12bit.png)
 
    * **8-bit YCbCr 4:4:4**
 
-![YCbCr444-8bit](/Users/zengcan/Documents/GitHub/DRM/HDMI/picture/YCbCr444-8bit.png)
+![YCbCr444-8bit](./picture/YCbCr444-8bit.png)
 
 
 
@@ -28,7 +28,7 @@
 
 1. HDMI VSDB中有bit能够表明sink支持的color depth
 
-![HDMI VSDB pixel encoding](./picture/HDMI VSDB pixel encoding.png)
+![HDMI VSDB pixel encoding](./picture/HDMI_VSDB_pixel_encoding.png)
 
 
 
@@ -46,7 +46,7 @@
 
    * pixel packing phase
 
-     ![pixel packing phase](./picture/pixel packing phase.png)
+     ![pixel packing phase](./picture/pixel_packing_phase.png)
 
    * GCP (general control packet)
 
@@ -73,7 +73,7 @@
 
 # Quantization Ranges
 
-![Quantization Ranges](./picture/Quantization Ranges.png)
+![Quantization Ranges](./picture/Quantization_Ranges.png)
 
 
 
@@ -91,7 +91,7 @@ SMPTE 170M; ITU-R BT.601; ITU-R BT.709; xvYCC...
 
 > spec规定至少每两个field发一次，但实际做法是每个field发一次，对Progressive video format，即每帧发一次，对Interlace video format而言，即Odd，Even field各一次。实际做法中，AVI infoframe被放到紧跟VSYNC之后。
 
-![AVI infoframe](./picture/AVI infoframe.png)
+![AVI infoframe](./picture/AVI_infoframe.png)
 
 当Sink的HDMI VSDB中CNC bit具有某种（Graphics，Photo，Cinema，Game）内容的特殊处理模式时，并且Source知道当前video来源时，才会把AVI infoFrame中的ITC和CN1，CN0设置成非0，否则应该设置成全0（No Data）。 这样时方便Sink对某些特殊video内容做特殊处理。
 
@@ -108,7 +108,7 @@ HDMI VSIF主要有两个功能：
 
 当AVI InfoFrame中包含了VIC，而HDMI VSIF中包含了HDMI_VIC(for 4k x 2k) ,Sink应该使用HDMI VSIF中的HDMI_VSIF。
 
-![HDMI VSIF](./picture/HDMI VSIF.png)
+![HDMI VSIF](./picture/HDMI_VSIF.png)
 
 
 
@@ -126,9 +126,9 @@ HDMI VSIF主要有两个功能：
 
 ### frame packing
 
-![frame packing for progressive format](./picture/frame packing for progressive format.png)
+![frame packing for progressive format](./picture/frame_packing_for_progressive_format.png)
 
-![Frame packing for interlaced format](./picture/Frame packing for interlaced format.png)
+![Frame packing for interlaced format](./picture/Frame_packing_for_interlaced_format.png)
 
 ### side-by-side
 
@@ -164,7 +164,7 @@ HDMI VSIF主要有两个功能：
 
 ![InfoFrame](./picture/InfoFrame.png)
 
-![InfoFrame checksum](./picture/InfoFrame checksum.jpg)
+![InfoFrame checksum](./picture/InfoFrame_checksum.jpg)
 
 
 
@@ -176,7 +176,7 @@ HDMI VSIF主要有两个功能：
 
      **原始RGB444图像** 
 
-     ![RGB原始图像](./picture/RGB原始图像.jpg)
+     ![RGB原始图像](./picture/RGB_original.jpg)
 
      **RGB444-YCbCr444图像**
 
@@ -190,7 +190,7 @@ HDMI VSIF主要有两个功能：
 
      **原始YCbCr444图像**
 
-     ![YCbCr444原始图像](./picture/YCbCr444原始图像.jpg)
+     ![YCbCr444原始图像](./picture/YCbCr444_original.jpg)
 
      **YCbCr444-RGB图像，颜色偏紫红**
 

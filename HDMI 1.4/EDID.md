@@ -81,5 +81,5 @@ Tag Code:
 
 ##HDMI VSDB
 
-![HDMI VSDB](./picture/HDMI VSDB.png)
+![HDMI VSDB](./picture/HDMI_VSDB.png)
 
