@@ -18,13 +18,13 @@
 
 ##Start Bit Timing
 
-![start bit timing](./picture/start bit timing.png)
+![start bit timing](./picture/start_bit_timing.png)
 
 重要时间参数：**3.7，4.5**，在看波形时方便定位start bit
 
 ## Data Bit Timing
 
-![Data Bit Timing](./picture/Data Bit Timing.png)
+![Data Bit Timing](./picture/Data_Bit_Timing.png)
 
 重要时间参数：**2.4**，在看波形时方便定位data bit
 
@@ -34,14 +34,14 @@ CEC Figure 5 shows an example bit with both Initiator and Follower where the Fol
 
 > Initiator继续发1，而Follower在Safe Sample Period拉低。
 
-![cec ACK](./picture/cec ACK.png)
+![cec ACK](./picture/cec_ACK.png)
 
 1. 非广播消息，0 = ACK 拉低表示ACK
 2. 广播消息，1 = ACK，拉低表示NACK
 
 
 
-![cec wave](./picture/cec wave.jpg)
+![cec wave](./picture/cec_wave.jpg)
 
 看cec波形有以下几个点：
 
@@ -52,13 +52,13 @@ CEC Figure 5 shows an example bit with both Initiator and Follower where the Fol
 
 ##Frame Description
 
-![cec frame](./picture/cec frame.png)
+![cec frame](./picture/cec_frame.png)
 
 最大message size是16*10 bit。包括Header block和Data block。
 
-![cec header block](./picture/cec header block.png)
+![cec header block](./picture/cec_header_block.png)
 
-![cee logical address](./picture/cee logical address.png)
+![cee logical address](./picture/cee_logical_address.png)
 
 
 
@@ -85,7 +85,7 @@ CEC Figure 5 shows an example bit with both Initiator and Follower where the Fol
 
 1. **Signal Free Time**，在开始传送一个新的frame之前，应该留有一段空闲时间。
 
-   ![Signal Free Time](./picture/Signal Free Time.png)
+   ![Signal Free Time](./picture/Signal_Free_Time.png)
 
    Note: 这里的计量单位是nominal data bit period,即2.4ms；上一个Initiator发完之后要等7个data bit period，而新的Initiator只需要等5个data bit period，这使得CEC bus不会被一个设备独占，让其它设备也有机会成为Initiator。
 

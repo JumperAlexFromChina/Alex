@@ -1,6 +1,6 @@
 ## Topology of HDCP system
 
-![屏幕快照 2020-03-25 22.40.43](./picture/屏幕快照 2020-03-25 22.40.43.png)
+![屏幕快照 2020-03-25 22.40.43](./picture/2020-03-25_22_40_43.png)
 
 
 
@@ -8,7 +8,7 @@
 
 * **First Part of Authentication Protocol**
 
-![屏幕快照 2020-03-25 22.42.57](./picture/屏幕快照 2020-03-25 22.42.57.png)
+![屏幕快照 2020-03-25 22.42.57](./picture/2020-03-25_22_42_57.png)
 
 The HDCP Transmitter enables HDCP Encryption when the first part of the authentication protocol successfully completes. 
 
@@ -16,11 +16,11 @@ spec规定在第一阶段认证成功后就可以开始加密，但是在实际�
 
 * **Second Part of Authentication Protocol**
 
-![屏幕快照 2020-03-25 22.46.42](./picture/屏幕快照 2020-03-25 22.46.42.png)
+![屏幕快照 2020-03-25 22.46.42](./picture/2020-03-25_22_46_42.png)
 
 KSV list是指当前repeater下游所有设备的KSV集合，但不包含repeater本身的KSV。
 
-![屏幕快照 2020-03-25 22.48.18](./picture/屏幕快照 2020-03-25 22.48.18.png)
+![屏幕快照 2020-03-25 22.48.18](./picture/2020-03-25_22_48_18.png)
 
 如果KSV list ready bit超时fail，Tx要重新发AKSV和An，重做HDCP;
 
@@ -30,7 +30,7 @@ If either MAX_CASCADE_EXCEEDED or MAX_DEVS_EXCEEDED status bits are set, the REA
 
 * **Third Part of Authentication Protocol**
 
-![屏幕快照 2020-03-25 22.55.53](./picture/屏幕快照 2020-03-25 22.55.53.png)
+![屏幕快照 2020-03-25 22.55.53](./picture/2020-03-25_22_55_53.png)
 
 1. 可以每2s或者每128帧比对一次Ri
 
@@ -49,17 +49,17 @@ If either MAX_CASCADE_EXCEEDED or MAX_DEVS_EXCEEDED status bits are set, the REA
 
 * **第一个HDCP port寄存器表**
 
-![iShot2020-03-2523.10.22](./picture/iShot2020-03-2523.10.22.png)
+![iShot2020-03-2523.10.22](./picture/iShot2020-03-25_23_10_22.png)
 
-![iShot2020-03-2523.13.08](./picture/iShot2020-03-2523.13.08.png)
+![iShot2020-03-2523.13.08](./picture/iShot2020-03-2523_13_08.png)
 
 * **第二个HDCP port寄存器表**
 
-![iShot2020-03-2523.17.00](./picture/iShot2020-03-2523.17.00.png)
+![iShot2020-03-2523.17.00](./picture/iShot2020-03-2523_17_00.png)
 
 * **Bstatus寄存器**
 
-![屏幕快照 2020-03-25 23.18.20](./picture/屏幕快照 2020-03-25 23.18.20.png)
+![屏幕快照 2020-03-25 23.18.20](./picture/2020-03-25_23_18_20.png)
 
 
 
@@ -71,13 +71,13 @@ If either MAX_CASCADE_EXCEEDED or MAX_DEVS_EXCEEDED status bits are set, the REA
 
 EESS is always used with the HDMI protocol. HDMI总是使用EESS。
 
-![屏幕快照 2020-03-25 23.23.27](./picture/屏幕快照 2020-03-25 23.23.27.png)
+![屏幕快照 2020-03-25 23.23.27](./picture/2020-03-25_23_23_27.png)
 
 The CTLx signals described in Table 2-5 are only valid within a 16-clock window of opportunity starting at 512 pixel clocks following the active edge of VSYNC. **EESS要在Vsync active edge之后的512 pixel clock—> 528(512+16) pixel clock区间内发送完成。**
 
 It is required that no Data Island or Video Data, nor any Guard Band, be transmitted during a keep-out period that starts 508 pixels past the active edge of VSYNC and ends 650 pixels past the active edge of VSYNC. **keep-out区间内不许发送Video Data，Data Island和Guard Band。**
 
-![屏幕快照 2020-03-25 23.48.53](./picture/屏幕快照 2020-03-25 23.48.53.png)
+![屏幕快照 2020-03-25 23.48.53](./picture/2020-03-25_23_48_53.png)
 
 从图上可以看出，keep-out区间在508-650 pixel clock，在这期间不许发Video Data， Data Island和Guard Band。win_of_opp在512-528，win_of_opp之后的数据就是可以ENC_EN加密的，但是529-650这段区间还属于keep-out区间，不允许发Data Island和Video Data。所有只可能有preamble，而preamble又是不加密的，所以实际在keep-out整个区间（508-650）是不加密的。
 
@@ -107,7 +107,7 @@ The HDMI Specification defines a facility for the HDCP Transmitter to inform the
 
 ##Data Encryption
 
-![屏幕快照 2020-03-25 23.31.22](./picture/屏幕快照 2020-03-25 23.31.22.png)
+![屏幕快照 2020-03-25 23.31.22](./picture/2020-03-25_23_31_22.png)
 
 In dual-link implementations the Audiovisual Content is 48-bits wide and requires two HDCP Ciphers to produce the required pseudo-random streams. **1个HDCP cipher只能加密24bit，Type B需要2个HDCP cipher。**
 
