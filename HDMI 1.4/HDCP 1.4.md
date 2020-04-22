@@ -113,3 +113,8 @@ In dual-link implementations the Audiovisual Content is 48-bits wide and require
 
 
 
+## HDCP Cipher
+
+![iShot20200419120644](./picture/iShot20200419120644.png)
+
+HDCP 1.4 Cipher Block共分3层，每个clock pulse生成24bit伪随机数用于内容加密（加密1个24bit pixel）。而HDCP 2.2 Cipher Block每个clock pulse会生成128bit伪随机数（加密5个24bit pixel，剩余8bit不用）
