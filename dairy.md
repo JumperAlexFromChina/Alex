@@ -12,5 +12,13 @@
 
 4. Bootlin可查Linux源码；Xmind思维导图软件
 
-   
+
+
+# 20200428
+
+为什么Dolby Standard HDR要把metadata嵌入到video数据中？
+
+'能够做到最小程度的依赖别的IP，或者完全不依赖于别的IP。例如，原本的HDMI IP不支持Dolby Vision，如果为了支持Dolby HDR，需要做很大的改动。而Dolby IP有能力把metadata嵌入到video数据中，那原有的HDMI IP完全不用做改动，Dolby IP+原有HDMI IP就可能实现Dolby Standard HDR'。这个说法是有道理的，难道这也是Dolby能够很快占领市场的原因？
+
+
 
