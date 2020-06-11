@@ -22,3 +22,8 @@
 
 
 
+
+
+# 20200611
+
+Sink（电视）的不同HDMI端口的EDID中CEC physical address依次是1000，2000，3000. 这样在routing change的时候才能确切区分是哪个端口
